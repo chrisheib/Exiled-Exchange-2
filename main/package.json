@@ -36,6 +36,7 @@
     "esbuild": "^0.27.2",
     "ini": "^6.0.0",
     "eslint-config-prettier": "^9.1.0",
+    "patch-package": "^8.0.1",
     "prettier": "3.4.2",
     "typescript": "5.9.x",
     "ws": "^8.16.0"

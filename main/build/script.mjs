@@ -1,17 +1,18 @@
 import child_process from 'child_process'
-import electron from 'electron'
 import esbuild from 'esbuild'
+import process from 'process'
 
 const isDev = !process.argv.includes('--prod')
 
 const electronRunner = (() => {
   let handle = null
   return {
-    restart () {
-      console.info('Restarting Electron process.')
+    restart() {
+      const electronBin = process.env.ELECTRON_BINARY ?? 'electron'
+      console.info(`Restarting Electron process. ${electronBin}`)
 
       if (handle) handle.kill()
-      handle = child_process.spawn(electron, ['.'], {
+      handle = child_process.spawn(electronBin, ['.'], {
         stdio: 'inherit'
       })
     }
@@ -38,7 +39,7 @@ const mainContext = await esbuild.context({
   },
   plugins: (isDev) ? [{
     name: 'electron-runner',
-    setup (build) {
+    setup(build) {
       build.onEnd((result) => {
         if (!result.errors.length) electronRunner.restart()
       })
